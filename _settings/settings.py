@@ -1,7 +1,11 @@
 from pathlib import Path
+import environ
+
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
@@ -110,3 +114,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+URL_GAME_CREATE = env.list('url_game_create')
+URL_ARTICLES = env.list('url_articles')
+URL_API_AUTH = env.list('url_api_auth')
+TOKEN = env.list('token')

@@ -1,14 +1,15 @@
 import time
 
 import requests
+from _settings import settings
 
 
 class ApiClient:
-    url_game_create = 'http://127.0.0.1:8000/api/game-create/'
-    url_articles = 'http://127.0.0.1:8000/api/articles/'
-    url_api_auth = 'http://127.0.0.1:8000/api-auth/'
-    token = {'Authorization': 'Token 1fffe0ff7203dd15b490355ad8d9fe446f5ab498'}
-
+    url_game_create = settings.URL_GAME_CREATE
+    url_articles = settings.URL_ARTICLES
+    url_api_auth = settings.URL_API_AUTH
+    token = {'Authorization': f'Token {settings.TOKEN}'}
+    print(url_articles, url_api_auth, url_game_create, token)
     def get_request_api(self):
         for i in range(2):
             token = {'Authorization': f'Token {self.get_token_from_file()}'}
