@@ -3,19 +3,21 @@ import time
 import requests
 from _settings import settings
 
+url_game_create = settings.URL_GAME_CREATE
+url_articles = settings.URL_ARTICLES
+url_api_auth = settings.URL_API_AUTH
+token = {'Authorization': f'Token {settings.TOKEN}'}
+
 
 class ApiClient:
-    url_game_create = settings.URL_GAME_CREATE
-    url_articles = settings.URL_ARTICLES
-    url_api_auth = settings.URL_API_AUTH
-    token = {'Authorization': f'Token {settings.TOKEN}'}
-    print(url_articles, url_api_auth, url_game_create, token)
+    # print(url_articles, url_api_auth, url_game_create, token)
+
     def get_request_api(self):
         for i in range(2):
             token = {'Authorization': f'Token {self.get_token_from_file()}'}
             print(token)
             try:
-                get = requests.get(url=self.url_articles, headers=token)
+                get = requests.get(url=url_articles, headers=token)
                 # get = get.json()
                 print(get.status_code)
             except Exception as err:
@@ -43,7 +45,7 @@ class ApiClient:
             "username": "DENI",
             "password": "9162"
         }
-        auth_response = requests.post(url=self.url_api_auth, json=body)
+        auth_response = requests.post(url=url_api_auth, json=body)
         json_response = auth_response.json()
         token_api = json_response['token']
         print(auth_response)
@@ -51,13 +53,13 @@ class ApiClient:
         with open('token.txt', 'w') as file:
             file.write(token_api)
 
-api_client = ApiClient()
-x = api_client.get_request_api()
+# api_client = ApiClient()
+# x = api_client.get_request_api()
 
 
 class Requests:
     def get_json(self):
-        response = requests.get(self.url_game_create, headers=self.token)
+        response = requests.get(url_articles, headers=token)
         json = response.json()
         status = response.status_code
         return json, status
@@ -72,7 +74,7 @@ class Requests:
           "price": price,
         }
 
-        response = requests.post(self.url_game_create, headers=self.token, data=body,)
+        response = requests.post(url_game_create, headers=token, data=body,)
         json = response.json()
         status = response.status_code
         return json, status
@@ -109,7 +111,7 @@ class PostFile(GetFromFile):
             "price": price,
         }
         image = self.image_from_url(link)
-        response = requests.post(self.url_game_create, headers=self.token, data=body, files=image)
+        response = requests.post(url_game_create, headers=token, data=body, files=image)
         json = response.json()
         status = response.status_code
         return json, status
@@ -124,7 +126,7 @@ class PostFile(GetFromFile):
             "price": price,
         }
         files = self.files_from_url(url)
-        response = requests.post(self.url_game_create, headers=self.token, data=body, files=files)
+        response = requests.post(url_game_create, headers=token, data=body, files=files)
         json = response.json()
         status = response.status_code
         return json, status
@@ -139,12 +141,16 @@ class PostFile(GetFromFile):
             "price": price,
         }
         files = self.double_files_from_url(link, url)
-        response = requests.post(self.url_game_create, headers=self.token, data=body, files=files)
+        response = requests.post(url_game_create, headers=token, data=body, files=files)
         json = response.json()
         status = response.status_code
         return json, status
 
 
-class ApiClientTwo(ApiClient, GetFromFile, Requests):
-    def __init__(self):
-        pass
+class ApiClientTwo(ApiClient, Requests, PostFile):
+    pass
+
+A2 = ApiClientTwo()
+print(A2.post_image_and_files('fewa', 2, 'gresges', 'fewafaw', 2, 22,
+                              'http://127.0.0.1:8000/media/game_main/GTAV_Official_Cover_Art_m0qAyLu.jpg',
+                              'http://127.0.0.1:8000/media/game_files/sertifikat_konkursanta.pdf'))
