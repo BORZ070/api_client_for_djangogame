@@ -115,7 +115,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-URL_GAME_CREATE = env.list('url_game_create')
-URL_ARTICLES = env.list('url_articles')
-URL_API_AUTH = env.list('url_api_auth')
-TOKEN = env.list('token')
+URL_GAME_CREATE = env('url_game_create')
+URL_ARTICLES = env('url_articles')
+URL_API_AUTH = env('url_api_auth')
+TOKEN = env('token')
